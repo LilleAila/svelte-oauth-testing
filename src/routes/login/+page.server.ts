@@ -26,7 +26,7 @@ export const actions = {
 		throw redirect(303, '/dashboard');
 	},
 
-	login: async ({ locals, request }) => {
+	login: async ({ locals, request, cookies }) => {
 		const data = await request.formData();
 		const email = data.get('email');
 		const password = data.get('password');
@@ -39,6 +39,7 @@ export const actions = {
 			await locals.pb.collection('users').authWithPassword(email.toString(), password.toString());
 		} catch (e) {
 			const error = e as ClientResponseError;
+			console.log(error);
 			return fail(500, { fail: true, message: error.message });
 		}
 
@@ -65,7 +66,7 @@ export const actions = {
 };
 
 export const load = (async ({ locals }) => {
-	if (locals.pb.authStore.model) {
+	if (locals.pb.authStore.isValid) {
 		return redirect(303, '/dashboard');
 	}
 

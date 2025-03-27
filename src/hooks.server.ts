@@ -24,6 +24,7 @@ export const authentication: Handle = async ({ event, resolve }) => {
 
 const unprotectedPrefix = ['/login'];
 export const authorization: Handle = async ({ event, resolve }) => {
+	console.log(event.locals.pb.authStore);
 	if (
 		!unprotectedPrefix.some((path) => event.url.pathname.startsWith(path)) &&
 		event.url.pathname !== '/'
