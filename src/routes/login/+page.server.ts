@@ -27,7 +27,8 @@ export const actions = {
 			path: '/',
 			httpOnly: false,
 			sameSite: 'lax',
-			secure: process.env.NODE_ENV === 'production'
+			secure: process.env.NODE_ENV === 'production',
+			maxAge: 60 * 60 * 24 * 7 // 7 days
 		});
 
 		throw redirect(303, '/');
