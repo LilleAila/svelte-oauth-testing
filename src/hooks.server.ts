@@ -7,7 +7,7 @@ import { redirect } from '@sveltejs/kit';
 export const authentication: Handle = async ({ event, resolve }) => {
 	event.locals.pb = new PocketBase(env.PB_URL);
 
-	event.locals.pb.authStore.loadFromCookie(event.request.headers.get('cookie') || '');
+	event.locals.pb.authStore.loadFromCookie(event.cookies.get('pb_auth') || '');
 
 	try {
 		if (event.locals.pb.authStore.isValid) event.locals.pb.collection('users').authRefresh();
@@ -17,7 +17,12 @@ export const authentication: Handle = async ({ event, resolve }) => {
 
 	const response = await resolve(event);
 
-	response.headers.append('set-cookie', event.locals.pb.authStore.exportToCookie());
+	response.headers.append(
+		'set-cookie',
+		event.locals.pb.authStore.exportToCookie({
+			httpOnly: false
+		})
+	);
 
 	return response;
 };
@@ -38,4 +43,4 @@ export const authorization: Handle = async ({ event, resolve }) => {
 	return await resolve(event);
 };
 
-export const handle = sequence(authentication, authorization);
+export const handle = sequence(authentication);

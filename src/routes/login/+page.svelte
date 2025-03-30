@@ -21,5 +21,4 @@
   </label>
   <button type="submit">Login</button>
   <button formaction="?/register">Register</button>
-  <button formaction="?/reset">Reset password</button>
 </form>

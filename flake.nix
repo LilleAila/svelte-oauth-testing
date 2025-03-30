@@ -15,10 +15,9 @@
     in
     {
       devShells = forEachSystem (
-        pkgs: with pkgs; rec {
+        pkgs: with pkgs; {
           default = mkShell {
             nativeBuildInputs = [
-
               nixd
               nixfmt-rfc-style
               statix
